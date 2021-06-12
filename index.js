@@ -28,7 +28,7 @@ const makeMessage = context => {
       ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
     ].join('\n')
   } else if (context.eventName === 'issue_comment' && payload.action === 'created') {
-    const issue = payload.issue]
+    const issue = payload.issue
     if (!('pull_request' in issue)) {
       content = [
         `## :comment: issue [${issue.title}](${issue.html_url}) にコメントが追加されました`,
