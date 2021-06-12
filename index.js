@@ -35,6 +35,8 @@ const makeMessage = context => {
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'opened') {
     const pr = payload.pull_request
+    console.log('is pr')
+    console.log(pr)
     content = [
       `## :git_pull_request: [${pr.title}](${pr.html_url}) が作成されました`,
       `**リポジトリ**: ${payload.repository.name}`,
@@ -43,12 +45,21 @@ const makeMessage = context => {
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'closed') {
     const pr = payload.pull_request
-    content = [
-      `## :git_pull_request_closed: [${pr.title}](${pr.html_url}) がマージされました :tada:`,
-      `**リポジトリ**: ${payload.repository.name}`,
-      `**作成者**: ${context.actor}`,
-      ...(pr.body.length === 0 ? []: ['', '---', pr.body])
-    ].join('\n')
+    if (pr.merged) {
+      content = [
+        `## :git_merged: [${pr.title}](${pr.html_url}) がマージされました :tada:`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**作成者**: ${context.actor}`,
+        ...(pr.body.length === 0 ? [] : ['', '---', pr.body])
+      ].join('\n')
+    } else {
+      content = [
+        `## :git_pull_request_closed: [${pr.title}](${pr.html_url}) が閉じられました`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**作成者**: ${context.actor}`,
+        ...(pr.body.length === 0 ? [] : ['', '---', pr.body])
+      ].join('\n')
+    }
   } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
     // TODO リクエストされた人をだす
     const pr = payload.pull_request
@@ -75,7 +86,7 @@ try {
   const context = github.context
   const content = makeMessage(context)
 
-  if (content !== null) {
+  if (typeof content === 'string') {
     const url = `https://q.trap.jp/api/v3/webhooks/${id}`
     let headers = { 'Content-Type': 'text/plain' }
     if (secret !== '-1') {
