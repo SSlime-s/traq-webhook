@@ -5,15 +5,9 @@ const fetch = require('node-fetch')
 
 const calcHMACSHA1 = (message, secret) => crypto.createHmac('sha1', secret).update(message).digest('hex')
 
-try {
-  const id = core.getInput('webhook-id')
-  const secret = core.getInput('webhook-secret', { required: false })
-  // const content = core.getInput('content')
-  const channelId = core.getInput('channel-id', { required: false })
-
+const makeMessage = context => {
   let content = null
-  const context = github.context
-  const payload = github.context.payload
+  const payload = context.payload
   console.log(payload)
   if (context.eventName === 'issues' && payload.action === 'opened') {
     const issue = payload.issue
@@ -21,7 +15,7 @@ try {
       `## :git_issue_opened: [${issue.title}](${issue.html_url})が作成されました`,
       `リポジトリ: ${payload.repository.name}`,
       `作成者: ${context.actor}`,
-      ...(issue.body.length === 0 ? [] : ['---', issue.body])
+      ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
     ].join('\n')
   } else if (context.eventName === 'issues' && payload.action === 'closed') {
     const issue = payload.issue
@@ -29,7 +23,7 @@ try {
       `## :git_issue_closed: [${issue.title}](${issue.html_url})が閉じられました`,
       `リポジトリ: ${payload.repository.name}`,
       `作成者: ${context.actor}`,
-      ...(issue.body.length === 0 ? [] : ['---', issue.body])
+      ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
     ].join('\n')
   } else if (context.eventName === 'issue_comment' && payload.action === 'created') {
     const issue = payload.issue
@@ -44,7 +38,7 @@ try {
       `## :git_pull_request: [${pr.title}](${pr.html_url}) が作成されました`,
       `リポジトリ: ${payload.repository.name}`,
       `作成者: ${context.actor}`,
-      ...calcHMACSHA1(pr.body.length === 0 ? []: ['---', pr.body])
+      ...calcHMACSHA1(pr.body.length === 0 ? []: ['', '---', pr.body])
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'closed') {
     const pr = payload.pull_request
@@ -52,7 +46,7 @@ try {
       `## :git_pull_request_closed: [${pr.title}](${pr.html_url}) がマージされました :tada:`,
       `リポジトリ: ${payload.repository.name}`,
       `作成者: ${context.actor}`,
-      ...calcHMACSHA1(pr.body.length === 0 ? []: ['---', pr.body])
+      ...calcHMACSHA1(pr.body.length === 0 ? []: ['', '---', pr.body])
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
     // TODO リクエストされた人をだす
@@ -68,9 +62,18 @@ try {
       `リポジトリ: ${payload.repository.name}`,
       `追加した人: ${context.actor}`
     ].join('\n')
-  } else {
-    return
   }
+  return content
+}
+
+try {
+  const id = core.getInput('webhook-id')
+  const secret = core.getInput('webhook-secret', { required: false })
+  // const content = core.getInput('content')
+  const channelId = core.getInput('channel-id', { required: false })
+
+  const context = github.context
+  const content = makeMessage(context)
 
   const url = `https://q.trap.jp/api/v3/webhooks/${id}`
   let headers = { 'Content-Type': 'text/plain' }
