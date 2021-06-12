@@ -1,0 +1,20 @@
+name: 'traq webhook'
+description: 'webhook for traq'
+inputs:
+  webhook-id:
+    description: webhook id
+    required: true
+  webhook-secret:
+    description: webhook secret
+    required: false
+    default: '-1'
+  content:
+    description: message content
+    required: true
+  channel-id:
+    description: send channel id
+    required: false
+    default: '-1'
+runs:
+  using: 'node12'
+  main: 'index.js'
