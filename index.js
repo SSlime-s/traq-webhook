@@ -8,8 +8,65 @@ const calcHMACSHA1 = (message, secret) => crypto.createHmac('sha1', secret).upda
 try {
   const id = core.getInput('webhook-id')
   const secret = core.getInput('webhook-secret', { required: false })
-  const content = core.getInput('content')
+  // const content = core.getInput('content')
   const channelId = core.getInput('channel-id', { required: false })
+
+  let content = null
+  const context = github.context
+  const payload = github.context.payload
+  console.log(payload)
+  if (context.eventName === 'issues' && payload.action === 'opened') {
+    const issue = payload.issue
+    content = [
+      `## :git_issue_opened: [${issue.body}](${issue.html_url})が作成されました`,
+      `リポジトリ: ${payload.repository.name}`,
+      `作成者: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'issues' && payload.action === 'closed') {
+    const issue = payload.issue
+    content = [
+      `## :git_issue_closed: [${issue.body}](${issue.html_url})が閉じられました`,
+      `リポジトリ: ${payload.repository.name}`,
+      `作成者: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'issue_comment' && payload.action === 'created') {
+    const issue = payload.issue
+    content = [
+      `## :comment: [${issue.body}](${issue.html_url}) にコメントが追加されました`,
+      `リポジトリ: ${payload.repository.name}`,
+      `コメントした人: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'pull_request' && payload.action === 'opened') {
+    const pr = payload.pull_request
+    content = [
+      `## :git_pull_request: [${pr.body}](${pr.html_url}) が作成されました`,
+      `リポジトリ: ${payload.repository.name}`,
+      `作成者: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'pull_request' && payload.action === 'closed') {
+    const pr = payload.pull_request
+    content = [
+      `## :git_pull_request_closed: [${pr.body}](${pr.html_url}) がマージされました :tada:`,
+      `リポジトリ: ${payload.repository.name}`,
+      `作成者: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
+    // TODO リクエストされた人をだす
+    const pr = payload.pull_request
+    content = [
+      `## :eyes_wave: [${pr.body}](${pr.html_url}) でレビューがリクエストされました`,
+      `リポジトリ: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'pull_request_review' && payload.action === 'submmitted') {
+    const pr = payload.pull_request
+    content = [
+      `## :blob_slide: [${pr.body}](${pr.html_url}) にコメントが追加されました`,
+      `リポジトリ: ${payload.repository.name}`,
+      `追加した人: ${context.actor}`
+    ].join('\n')
+  } else {
+    return
+  }
 
   const url = `https://q.trap.jp/api/v3/webhooks/${id}`
   let headers = { 'Content-Type': 'text/plain' }
