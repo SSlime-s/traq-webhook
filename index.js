@@ -61,11 +61,11 @@ const makeMessage = context => {
       ].join('\n')
     }
   } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
-    // TODO リクエストされた人をだす
     const pr = payload.pull_request
     content = [
       `## :eyes_wave: [${pr.title}](${pr.html_url}) でレビューがリクエストされました`,
-      `**リポジトリ**: ${context.actor}`
+      `**リポジトリ**: ${payload.repository.name}`,
+      `**リクエストされた人**: ${payload.requested_reviewer.login}`
     ].join('\n')
   } else if (context.eventName === 'pull_request_review' && payload.action === 'submmitted') {
     const pr = payload.pull_request
