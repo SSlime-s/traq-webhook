@@ -38,7 +38,7 @@ const makeMessage = context => {
       ].join('\n')
     } else {
       content = [
-        `## :blob_enjoy: PR[${issue.title}](${issue.html_url}) にレビューコメントが追加されました`,
+        `## :blobenjoy: PR[${issue.title}](${issue.html_url}) にレビューコメントが追加されました`,
         `**リポジトリ**: ${payload.repository.name}`,
         `**追加した人**: ${context.actor}`,
         ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
