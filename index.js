@@ -28,10 +28,10 @@ const makeMessage = context => {
   } else if (context.eventName === 'issue_comment' && payload.action === 'created') {
     const issue = payload.issue
     content = [
-      `## :comment: [${issue.title}](${issue.html_url}) にコメントが追加されました`,
+      `## :comment: issue [${issue.title}](${issue.html_url}) にコメントが追加されました`,
       `**リポジトリ**: ${payload.repository.name}`,
       `**コメントした人**: ${context.actor}`,
-      ...(payload.comment.body === 0 ? ['', '---', payload.comment.body] : [])
+      ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'opened') {
     const pr = payload.pull_request
@@ -63,16 +63,24 @@ const makeMessage = context => {
   } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
     const pr = payload.pull_request
     content = [
-      `## :eyes_wave: [${pr.title}](${pr.html_url}) でレビューがリクエストされました`,
+      `## :eyes_wave: PR[${pr.title}](${pr.html_url}) でレビューがリクエストされました`,
       `**リポジトリ**: ${payload.repository.name}`,
       `**リクエストされた人**: ${payload.requested_reviewer.login}`
     ].join('\n')
   } else if (context.eventName === 'pull_request_review' && payload.action === 'submmitted') {
     const pr = payload.pull_request
     content = [
-      `## :blob_slide: [${pr.title}](${pr.html_url}) にコメントが追加されました`,
+      `## :blob_slide: PR[${pr.title}](${pr.html_url}) がレビューされました`,
       `**リポジトリ**: ${payload.repository.name}`,
-      `**追加した人**: ${context.actor}`
+      `**レビューした人**: ${context.actor}`
+    ].join('\n')
+  } else if (context.eventName === 'pull_request_review_comment' && payload.action === 'created') {
+    const pr = payload.pull_request
+    content = [
+      `## :blob_enjoy: PR[${pr.title}](${pr.html_url}) にレビューコメントが追加されました`,
+      `**リポジトリ**: ${payload.repository.name}`,
+      `**追加した人**: ${context.actor}`,
+      ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
     ].join('\n')
   }
   return content
