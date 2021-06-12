@@ -73,7 +73,6 @@ try {
   const channelId = core.getInput('channel-id', { required: false })
 
   const context = github.context
-  context.payload.comment
   const content = makeMessage(context)
 
   if (content !== null) {
