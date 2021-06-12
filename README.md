@@ -19,8 +19,6 @@ on:
     types: [opened, closed, review_requested]
   pull_request_review:
     types: [submitted]
-  pull_request_review_comment:
-    types: [created]
 
 permissions: read-all
 
@@ -29,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: hoge
-      uses: SSlime-s/traq-webhook@v3.0
+      uses: SSlime-s/traq-webhook@v3.1
       with:
         webhook-id: ${{ secrets.WEBHOOK_ID }}
         webhook-secret: ${{ secrets.WEBHOOK_SECRET }}
