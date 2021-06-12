@@ -28,13 +28,22 @@ const makeMessage = context => {
       ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
     ].join('\n')
   } else if (context.eventName === 'issue_comment' && payload.action === 'created') {
-    const issue = payload.issue
-    content = [
-      `## :comment: issue [${issue.title}](${issue.html_url}) にコメントが追加されました`,
-      `**リポジトリ**: ${payload.repository.name}`,
-      `**コメントした人**: ${context.actor}`,
-      ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
-    ].join('\n')
+    const issue = payload.issue]
+    if (!('pull_request' in issue)) {
+      content = [
+        `## :comment: issue [${issue.title}](${issue.html_url}) にコメントが追加されました`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**コメントした人**: ${context.actor}`,
+        ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
+      ].join('\n')
+    } else {
+      content = [
+        `## :blob_enjoy: PR[${issue.title}](${issue.html_url}) にレビューコメントが追加されました`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**追加した人**: ${context.actor}`,
+        ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
+      ].join('\n')
+    }
   } else if (context.eventName === 'pull_request' && payload.action === 'opened') {
     const pr = payload.pull_request
     console.log('is pr')
@@ -75,14 +84,6 @@ const makeMessage = context => {
       `## :blob_slide: PR[${pr.title}](${pr.html_url}) がレビューされました`,
       `**リポジトリ**: ${payload.repository.name}`,
       `**レビューした人**: ${context.actor}`
-    ].join('\n')
-  } else if (context.eventName === 'pull_request_review_comment' && payload.action === 'created') {
-    const pr = payload.pull_request
-    content = [
-      `## :blob_enjoy: PR[${pr.title}](${pr.html_url}) にレビューコメントが追加されました`,
-      `**リポジトリ**: ${payload.repository.name}`,
-      `**追加した人**: ${context.actor}`,
-      ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
     ].join('\n')
   }
   return content
