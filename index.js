@@ -74,17 +74,31 @@ const makeMessage = context => {
   } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
     const pr = payload.pull_request
     content = [
-      `## :eyes_wave: PR[${pr.title}](${pr.html_url}) でレビューがリクエストされました`,
+      `## :blob_lurk: PR[${pr.title}](${pr.html_url}) でレビューがリクエストされました`,
       `**リポジトリ**: ${payload.repository.name}`,
       `**リクエストされた人**: ${payload.requested_reviewer.login}`
     ].join('\n')
-  } else if (context.eventName === 'pull_request_review' && payload.action === 'submmitted') {
+  } else if (context.eventName === 'pull_request_review' && payload.action === 'submitted') {
     const pr = payload.pull_request
-    content = [
-      `## :blob_slide: PR[${pr.title}](${pr.html_url}) がレビューされました`,
-      `**リポジトリ**: ${payload.repository.name}`,
-      `**レビューした人**: ${context.actor}`
-    ].join('\n')
+    if (payload.review.state === 'approved') {
+      content = [
+        `## :blobcaramelldansen: PR[${pr.title}](${pr.html_url}) が approve されました`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**approve した人**: ${payload.review.user.login}`
+      ].join('\n')
+    } else if (payload.review.state === 'changes_requested') {
+      content = [
+        `## :Hyperblob: PR[${pr.title}](${pr.html_url}) で変更がリクエストされました`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**リクエストした人**: ${payload.review.user.login}`
+      ].join('\n')
+    } else {
+      content = [
+        `## :blob_slide: PR[${pr.title}](${pr.html_url}) がレビューされました`,
+        `**リポジトリ**: ${payload.repository.name}`,
+        `**レビューした人**: ${payload.review.user.login}`
+      ].join('\n')
+    }
   }
   return content
 }
