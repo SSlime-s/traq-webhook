@@ -8,6 +8,8 @@ const calcHMACSHA1 = (message, secret) => crypto.createHmac('sha1', secret).upda
 const makeMessage = context => {
   let content = null
   const payload = context.payload
+  console.log(context)
+  console.log("-------------------------")
   console.log(payload)
   if (context.eventName === 'issues' && payload.action === 'opened') {
     const issue = payload.issue
