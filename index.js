@@ -18,49 +18,53 @@ try {
   if (context.eventName === 'issues' && payload.action === 'opened') {
     const issue = payload.issue
     content = [
-      `## :git_issue_opened: [${issue.body}](${issue.html_url})が作成されました`,
+      `## :git_issue_opened: [${issue.title}](${issue.html_url})が作成されました`,
       `リポジトリ: ${payload.repository.name}`,
-      `作成者: ${context.actor}`
+      `作成者: ${context.actor}`,
+      ...(issue.body.length === 0 ? [] : ['---', issue.body])
     ].join('\n')
   } else if (context.eventName === 'issues' && payload.action === 'closed') {
     const issue = payload.issue
     content = [
-      `## :git_issue_closed: [${issue.body}](${issue.html_url})が閉じられました`,
+      `## :git_issue_closed: [${issue.title}](${issue.html_url})が閉じられました`,
       `リポジトリ: ${payload.repository.name}`,
-      `作成者: ${context.actor}`
+      `作成者: ${context.actor}`,
+      ...(issue.body.length === 0 ? [] : ['---', issue.body])
     ].join('\n')
   } else if (context.eventName === 'issue_comment' && payload.action === 'created') {
     const issue = payload.issue
     content = [
-      `## :comment: [${issue.body}](${issue.html_url}) にコメントが追加されました`,
+      `## :comment: [${issue.title}](${issue.html_url}) にコメントが追加されました`,
       `リポジトリ: ${payload.repository.name}`,
       `コメントした人: ${context.actor}`
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'opened') {
     const pr = payload.pull_request
     content = [
-      `## :git_pull_request: [${pr.body}](${pr.html_url}) が作成されました`,
+      `## :git_pull_request: [${pr.title}](${pr.html_url}) が作成されました`,
       `リポジトリ: ${payload.repository.name}`,
-      `作成者: ${context.actor}`
+      `作成者: ${context.actor}`,
+      ...calcHMACSHA1(pr.body.length === 0 ? []: ['---', pr.body])
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'closed') {
     const pr = payload.pull_request
     content = [
-      `## :git_pull_request_closed: [${pr.body}](${pr.html_url}) がマージされました :tada:`,
+      `## :git_pull_request_closed: [${pr.title}](${pr.html_url}) がマージされました :tada:`,
       `リポジトリ: ${payload.repository.name}`,
-      `作成者: ${context.actor}`
+      `作成者: ${context.actor}`,
+      ...calcHMACSHA1(pr.body.length === 0 ? []: ['---', pr.body])
     ].join('\n')
   } else if (context.eventName === 'pull_request' && payload.action === 'review_requested') {
     // TODO リクエストされた人をだす
     const pr = payload.pull_request
     content = [
-      `## :eyes_wave: [${pr.body}](${pr.html_url}) でレビューがリクエストされました`,
+      `## :eyes_wave: [${pr.title}](${pr.html_url}) でレビューがリクエストされました`,
       `リポジトリ: ${context.actor}`
     ].join('\n')
   } else if (context.eventName === 'pull_request_review' && payload.action === 'submmitted') {
     const pr = payload.pull_request
     content = [
-      `## :blob_slide: [${pr.body}](${pr.html_url}) にコメントが追加されました`,
+      `## :blob_slide: [${pr.title}](${pr.html_url}) にコメントが追加されました`,
       `リポジトリ: ${payload.repository.name}`,
       `追加した人: ${context.actor}`
     ].join('\n')
