@@ -76,20 +76,22 @@ try {
   context.payload.comment
   const content = makeMessage(context)
 
-  const url = `https://q.trap.jp/api/v3/webhooks/${id}`
-  let headers = { 'Content-Type': 'text/plain' }
-  if (secret !== '-1') {
-    headers['X-TRAQ-Signature'] = calcHMACSHA1(content, secret)
+  if (content !== null) {
+    const url = `https://q.trap.jp/api/v3/webhooks/${id}`
+    let headers = { 'Content-Type': 'text/plain' }
+    if (secret !== '-1') {
+      headers['X-TRAQ-Signature'] = calcHMACSHA1(content, secret)
+    }
+    if (channelId !== '-1') {
+      headers['X-TRAQ-Channel-Id'] = channelId
+    }
+    console.log(headers)
+    fetch(url, {
+      method: 'POST',
+      body: content,
+      headers
+    })
   }
-  if (channelId !== '-1') {
-    headers['X-TRAQ-Channel-Id'] = channelId
-  }
-  console.log(headers)
-  fetch(url, {
-    method: 'POST',
-    body: content,
-    headers
-  })
 } catch (err) {
   core.setFailed(err.message)
 }
