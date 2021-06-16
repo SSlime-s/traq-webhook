@@ -8,9 +8,9 @@ const calcHMACSHA1 = (message, secret) => crypto.createHmac('sha1', secret).upda
 const makeMessage = context => {
   let content = null
   const payload = context.payload
-  console.log(context)
-  console.log("-------------------------")
-  console.log(payload)
+  core.debug(JSON.stringify(context, null, 2))
+  core.debug("------------------------- ")
+  core.debug(JSON.stringify(payload, null, 2))
   if (context.eventName === 'issues' && payload.action === 'opened') {
     const issue = payload.issue
     content = [
@@ -99,7 +99,7 @@ const makeMessage = context => {
         `## :blobwobwork: PR[${pr.title}](${pr.html_url}) がレビューされました`,
         `**リポジトリ**: ${payload.repository.name}`,
         `**レビューした人**: ${payload.review.user.login}`,
-        ...(payload.review.body.length === 0 ? [] : ['', '---', payload.review.body])
+        ...(payload.review.body === null || payload.review.body.length === 0 ? [] : ['', '---', payload.review.body])
       ].join('\n')
     }
   }
