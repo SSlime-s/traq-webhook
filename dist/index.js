@@ -170,9 +170,9 @@ const makeMessage = context => {
       ].join('\n')
     } else {
       content = [
-        `## :blobwobwork: PR[${pr.title}](${pr.html_url}) がレビューされました`,
+        `## :blobwobwork: PR[${pr.title}](${pr.html_url}) にレビューコメントが追加されました`,
         `**リポジトリ**: ${payload.repository.name}`,
-        `**レビューした人**: ${payload.review.user.login}`,
+        `**コメントした人**: ${payload.review.user.login}`,
         ...(payload.review.body === null || payload.review.body.length === 0 ? [] : ['', '---', payload.review.body])
       ].join('\n')
     }
