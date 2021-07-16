@@ -12,11 +12,11 @@ Webhook の Secret (Secure Webhookの場合必須)
 ```
 on:
   issues:
-    types: [opened, closed]
+    types: [opened, edited, closed, reopened]
   issue_comment:
-    types: [created]
+    types: [created, edited]
   pull_request:
-    types: [opened, closed, review_requested]
+    types: [opened, edited, closed, review_requested]
   pull_request_review:
     types: [submitted]
 
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: hoge
-      uses: SSlime-s/traq-webhook@v3.8
+      uses: SSlime-s/traq-webhook@v4.1
       with:
         webhook-id: ${{ secrets.WEBHOOK_ID }}
         webhook-secret: ${{ secrets.WEBHOOK_SECRET }}
