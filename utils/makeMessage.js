@@ -46,7 +46,7 @@ const makeMessage = context => {
     }
   }
 
-  else if (context.eventName === 'issue_comment' && payload.action === 'created') {
+  else if (context.eventName === 'issue_comment') {
     const issue = payload.issue
     // issue_comment は pull_request のコメントでもトリガーされるので分ける
     if ('pull_request' in issue) {
@@ -84,7 +84,7 @@ const makeMessage = context => {
     }
   }
 
-  else if (context.eventName === 'pull_request' && payload.action === 'opened') {
+  else if (context.eventName === 'pull_request') {
     const pr = payload.pull_request
     if (payload.action === 'opened') {
       message = [
