@@ -12,20 +12,20 @@ try {
   const channelId = core.getInput('channel-id', { required: false })
 
   const context = github.context
-  const content = makeMessage(context)
+  const message = makeMessage(context)
 
-  if (typeof content === 'string') {
+  if (typeof message === 'string') {
     const url = `https://q.trap.jp/api/v3/webhooks/${id}`
     let headers = { 'Content-Type': 'text/plain' }
     if (secret !== '-1') {
-      headers['X-TRAQ-Signature'] = calcHMACSHA1(content, secret)
+      headers['X-TRAQ-Signature'] = calcHMACSHA1(message, secret)
     }
     if (channelId !== '-1') {
       headers['X-TRAQ-Channel-Id'] = channelId
     }
     fetch(url, {
       method: 'POST',
-      body: content,
+      body: message,
       headers
     })
   }
