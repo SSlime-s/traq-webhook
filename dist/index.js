@@ -6135,7 +6135,7 @@ const createIssueLink = (issue, ogp = false) => createMdLink(issue.title, issue.
 const createRepoLink = (repo, ogp = false) => createMdLink(repo.name, repo.html_url, ogp)
 const createUserLink = (user, ogp = false) => createMdLink(user.login, user.html_url, ogp)
 
-const makeMessage = context => {
+const makeMessage = (core, context) => {
   let message = null
   const payload = context.payload
 
@@ -6463,7 +6463,7 @@ try {
   const channelId = core.getInput('channel-id', { required: false })
 
   const context = github.context
-  const message = makeMessage(context)
+  const message = makeMessage(core, context)
 
   if (typeof message === 'string') {
     const url = `https://q.trap.jp/api/v3/webhooks/${id}`
