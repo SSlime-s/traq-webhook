@@ -1,3 +1,4 @@
+const core = require('@actions/core')
 // HACK: https://... ではなく //... だと OGP がでない
 const createMdLink = (text, link, ogp = false) => `[${text}](${ogp ? link : link.replace(/^https?:/, '')})`
 // PR も format が同じなので PR のリンクも作れる
