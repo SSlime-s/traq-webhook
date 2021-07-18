@@ -1,4 +1,3 @@
-const core = require('@actions/core')
 // HACK: https://... ではなく //... だと OGP がでない
 const createMdLink = (text, link, ogp = false) => `[${text}](${ogp ? link : link.replace(/^https?:/, '')})`
 // PR も format が同じなので PR のリンクも作れる
@@ -6,7 +5,7 @@ const createIssueLink = (issue, ogp = false) => createMdLink(issue.title, issue.
 const createRepoLink = (repo, ogp = false) => createMdLink(repo.name, repo.html_url, ogp)
 const createUserLink = (user, ogp = false) => createMdLink(user.login, user.html_url, ogp)
 
-const makeMessage = context => {
+const makeMessage = (core, context) => {
   let message = null
   const payload = context.payload
 
