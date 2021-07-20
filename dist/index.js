@@ -6178,21 +6178,22 @@ const makeMessage = (core, context) => {
 
   else if (context.eventName === 'issue_comment') {
     const issue = payload.issue
+    const comment = payload.comment
     // issue_comment は pull_request のコメントでもトリガーされるので分ける
     if ('pull_request' in issue) {
       if (payload.action === 'created') {
         message = [
           `## :blobenjoy: PR ${createIssueLink(issue, true)} にコメントが追加されました`,
           `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-          `**コメントした人**: ${createUserLink(issue.user)}`,
-          ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
+          `**コメントした人**: ${createUserLink(comment.user)}`,
+          ...(comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
         ].join('\n')
       } else if (payload.action === 'edited') {
         message = [
           `## :blobenjoy: PR ${createIssueLink(issue, true)} のコメントが編集されました`,
           `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-          `**編集者**: ${createUserLink(issue.user)}`,
-          ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
+          `**編集者**: ${createUserLink(comment.user)}`,
+          ...(comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
         ].join('\n')
       }
     } else {
@@ -6200,15 +6201,15 @@ const makeMessage = (core, context) => {
         message = [
           `## :comment: issue ${createIssueLink(issue, true)} にコメントが追加されました`,
           `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-          `**コメントした人**: ${createUserLink(issue.user)}`,
-          ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
+          `**コメントした人**: ${createUserLink(comment.user)}`,
+          ...(comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
         ].join('\n')
       } else if (payload.action === 'edited') {
         message = [
           `## :comment: issue ${createIssueLink(issue, true)} のコメントが編集されました`,
           `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-          `**編集者**: ${createUserLink(issue.user)}`,
-          ...(payload.comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
+          `**編集者**: ${createUserLink(comment.user)}`,
+          ...(comment.body.length === 0 ? [] : ['', '---', payload.comment.body])
         ].join('\n')
       }
     }
