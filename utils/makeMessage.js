@@ -10,8 +10,6 @@ const makeMessage = (core, context) => {
   const payload = context.payload
 
   core.debug(JSON.stringify(context, null, 2))
-  core.debug("------------------------- ")
-  core.debug(JSON.stringify(payload, null, 2))
 
   if (context.eventName === 'issues') {
     const issue = payload.issue
@@ -19,21 +17,21 @@ const makeMessage = (core, context) => {
       message = [
         `## :git_issue_opened: ${createIssueLink(issue, true)}が作成されました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-        `**作成者**: ${createUserLink(issue.user)}`,
+        `**作成者**: ${createUserLink(payload.sender)}`,
         ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
       ].join('\n')
     } else if (payload.action === 'edited') {
       message = [
         `## :pencil: issue ${createIssueLink(issue, true)}が編集されました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-        `**編集者**: ${createUserLink(issue.user)}`,
+        `**編集者**: ${createUserLink(payload.sender)}`,
         ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
       ].join('\n')
     } else if (payload.action === 'closed') {
       message = [
         `## :git_issue_closed: ${createIssueLink(issue, true)}が閉じられました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-        `**閉じた人**: ${createUserLink(issue.user)}`,
+        `**閉じた人**: ${createUserLink(payload.sender)}`,
         ...(issue.body.length === 0 ? [] : ['', '---', issue.body])
       ].join('\n')
     } else if (payload.action === 'reopened') {
@@ -91,29 +89,29 @@ const makeMessage = (core, context) => {
       message = [
         `## :git_pull_request: PR ${createIssueLink(pr, true)} が作成されました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-        `**作成者**: ${createUserLink(payload.user)}`,
+        `**作成者**: ${createUserLink(payload.sender)}`,
         ...(pr.body.length === 0 ? []: ['', '---', pr.body])
       ].join('\n')
-    } else if (body.action === 'edited') {
+    } else if (payload.action === 'edited') {
       message = [
         `## :git_pull_request: PR ${createIssueLink(pr, true)} が編集されました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-        `**編集者**: ${createUserLink(payload.user)}`,
+        `**編集者**: ${createUserLink(payload.sender)}`,
         ...(pr.body.length === 0 ? []: ['', '---', pr.body])
       ].join('\n')
-    } else if (body.action === 'closed') {
+    } else if (payload.action === 'closed') {
       if (pr.merged) {
         message = [
           `## :git_merged: PR ${createIssueLink(pr, true)} がマージされました :tada:`,
           `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-          `**マージした人**: ${createUserLink(payload.user)}`,
+          `**マージした人**: ${createUserLink(payload.sender)}`,
           ...(pr.body.length === 0 ? [] : ['', '---', pr.body])
         ].join('\n')
       } else {
         message = [
           `## :git_pull_request_closed: PR ${createIssueLink(pr, true)} が閉じられました`,
           `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-          `**閉じた人**: ${createUserLink(payload.user)}`,
+          `**閉じた人**: ${createUserLink(payload.sender)}`,
           ...(pr.body.length === 0 ? [] : ['', '---', pr.body])
         ].join('\n')
       }
