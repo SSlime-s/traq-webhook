@@ -119,7 +119,7 @@ const makeMessage = (core, context) => {
       message = [
         `## :blob_bongo: PR ${createIssueLink(pr, true)} でレビューがリクエストされました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
-        `**リクエストされた人**: ${createdUserLink(payload.requested_reviewer)}`
+        `**リクエストされた人**: ${createUserLink(payload.requested_reviewer)}`
       ].join('\n')
     }
   }
