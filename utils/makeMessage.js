@@ -152,6 +152,16 @@ const makeMessage = (core, context) => {
     }
   }
 
+  else if (context.eventName === 'release') {
+    const release = payload.release
+    if (payload.action === 'released') {
+      message = [
+        `## :tada.large: ${release.name || release.tag_name} がリリースされました`,
+        `**リポジトリ**: ${createRepoLink(payload.repository)}`,
+      ].join('\n')
+    }
+  }
+
   return message
 }
 module.exports = makeMessage;

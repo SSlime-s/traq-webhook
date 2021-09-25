@@ -19,6 +19,8 @@ on:
     types: [opened, edited, closed, review_requested]
   pull_request_review:
     types: [submitted]
+  release:
+    types: [released]
 
 permissions: read-all
 
