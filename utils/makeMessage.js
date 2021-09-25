@@ -156,7 +156,7 @@ const makeMessage = (core, context) => {
     const release = payload.release
     if (payload.action === 'released') {
       message = [
-        `## :tada.large: ${release.name || release.tag_name} がリリースされました`,
+        `## :tada.large: [${release.name || release.tag_name}](${release.html_url}) がリリースされました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
       ].join('\n')
     }
