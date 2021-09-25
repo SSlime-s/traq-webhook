@@ -158,6 +158,7 @@ const makeMessage = (core, context) => {
       message = [
         `## :tada.large: [${release.name || release.tag_name}](${release.html_url}) がリリースされました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
+        ...(release.body !== null && release.body.length === 0 ? [] : ['', '---', release.body])
       ].join('\n')
     }
   }
