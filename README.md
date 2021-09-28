@@ -29,7 +29,7 @@ jobs:
   webhook:
     runs-on: ubuntu-latest
     steps:
-    - name: hoge
+    - name: post to traQ
       uses: SSlime-s/traq-webhook@v4.11
       with:
         webhook-id: ${{ secrets.WEBHOOK_ID }}
