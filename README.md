@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: post to traQ
-      uses: SSlime-s/traq-webhook@v4.11
+      uses: SSlime-s/traq-webhook@v4.12
       with:
         webhook-id: ${{ secrets.WEBHOOK_ID }}
         webhook-secret: ${{ secrets.WEBHOOK_SECRET }}
