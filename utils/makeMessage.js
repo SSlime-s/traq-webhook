@@ -163,6 +163,15 @@ const makeMessage = (core, context) => {
     }
   }
 
+  else if (context.eventName === 'create') {
+    if (payload.ref_type === 'tag') {
+      message = [
+        `## :tada.large: ${payload.ref} がタグとして作成されました`,
+        `**リポジトリ**: ${createRepoLink(payload.repository)}`,
+      ].join('\n')
+    }
+  }
+
   return message
 }
 module.exports = makeMessage;

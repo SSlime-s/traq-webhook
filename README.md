@@ -21,6 +21,7 @@ on:
     types: [submitted]
   release:
     types: [released]
+  create
 
 permissions: read-all
 
