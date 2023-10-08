@@ -6286,7 +6286,18 @@ const makeMessage = (core, context) => {
     const release = payload.release
     if (payload.action === 'released') {
       message = [
-        `## :tada.large: ${release.name || release.tag_name} がリリースされました`,
+        `## :tada.large: [${release.name || release.tag_name}](${release.html_url}) がリリースされました`,
+        `**リポジトリ**: ${createRepoLink(payload.repository)}`,
+        ...(release.body !== null && release.body.length === 0 ? [] : ['', '---', release.body])
+      ].join('\n')
+    }
+  }
+
+  // うまく動いてなさそう
+  else if (context.eventName === 'create') {
+    if (payload.ref_type === 'tag') {
+      message = [
+        `## :tada.large: ${payload.ref} がタグとして作成されました`,
         `**リポジトリ**: ${createRepoLink(payload.repository)}`,
       ].join('\n')
     }
@@ -6472,9 +6483,10 @@ try {
   const id = core.getInput('webhook-id')
   const secret = core.getInput('webhook-secret', { required: false })
   const channelId = core.getInput('channel-id', { required: false })
+  const messageInput = core.getInput('message', { required: false }).trim()
 
   const context = github.context
-  const message = makeMessage(core, context)
+  const message = messageInput !== '' ? messageInput : makeMessage(core, context)
 
   if (typeof message === 'string') {
     const url = `https://q.trap.jp/api/v3/webhooks/${id}`

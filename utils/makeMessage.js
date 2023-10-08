@@ -163,6 +163,7 @@ const makeMessage = (core, context) => {
     }
   }
 
+  // うまく動いてなさそう
   else if (context.eventName === 'create') {
     if (payload.ref_type === 'tag') {
       message = [
