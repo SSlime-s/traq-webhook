@@ -10,9 +10,10 @@ try {
   const id = core.getInput('webhook-id')
   const secret = core.getInput('webhook-secret', { required: false })
   const channelId = core.getInput('channel-id', { required: false })
+  const messageInput = core.getInput('message', { required: false }).trim()
 
   const context = github.context
-  const message = makeMessage(core, context)
+  const message = messageInput !== '' ? messageInput : makeMessage(core, context)
 
   if (typeof message === 'string') {
     const url = `https://q.trap.jp/api/v3/webhooks/${id}`
