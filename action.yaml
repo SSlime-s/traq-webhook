@@ -12,6 +12,10 @@ inputs:
     description: send channel id
     required: false
     default: '-1'
+  message:
+    description: message content
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'
