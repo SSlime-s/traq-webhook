@@ -8,6 +8,9 @@ Webhook の Secret (Secure Webhookの場合必須)
 ### `channel-id`
 投稿先のチャンネル (入力しなければデフォルトのチャンネル)
 
+### `message`
+投稿するメッセージ (入力しなければ自動生成されます)
+
 ## 使用例
 ```
 on:
