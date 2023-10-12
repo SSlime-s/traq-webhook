@@ -1,11 +1,12 @@
 {
   "name": "traq-webhook",
-  "version": "1.0.0",
+  "version": "4.15",
   "description": "traQ に github actions +  webhook を用いて投稿するようのやつ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare-release": "ncc build index.js -o dist --source-map --license licenses.txt"
+    "bundle": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "deploy": "./bin/deploy.ts"
   },
   "repository": {
     "type": "git",
