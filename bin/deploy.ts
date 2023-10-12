@@ -192,16 +192,16 @@ const commitMessage = `🎉 bump version (${newTag})`;
   await p.status();
 }
 
-// {
-//   const p = Deno.run({
-//     cmd: ["git", "push"],
-//   });
-//   await p.status();
-// }
+{
+  const p = Deno.run({
+    cmd: ["git", "push"],
+  });
+  await p.status();
+}
 
-// {
-//   const p = Deno.run({
-//     cmd: ["git", "push", "--tags"],
-//   });
-//   await p.status();
-// }
+{
+  const p = Deno.run({
+    cmd: ["git", "push", "--tags"],
+  });
+  await p.status();
+}
