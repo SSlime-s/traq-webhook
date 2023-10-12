@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt"
+    "prepare-release": "ncc build index.js -o dist --source-map --license licenses.txt"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,6 @@
     "crypto": "^1.0.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.31.1"
+    "@vercel/ncc": "^0.38.0"
   }
 }
