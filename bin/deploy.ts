@@ -47,7 +47,7 @@ const parseVersion = (version: string): Version => {
 	const [major, minor, patch] = version
 		.split(".")
 		.map((v) => Number(v))
-		.map((v) => (isNaN(v) ? undefined : v));
+		.map((v) => (Number.isNaN(v) ? undefined : v));
 
 	if (major === undefined || minor === undefined) {
 		console.error(colors.red("[ERROR]"), "invalid version:", version);
@@ -100,7 +100,7 @@ const parseTag = (tag: string): Version => {
 	return parseVersion(tag.slice(1));
 };
 const stringifyTag = (version: Version): string => {
-	return "v" + stringifyVersion(version);
+	return `v${stringifyVersion(version)}`;
 };
 
 const runBundle = async () => {
