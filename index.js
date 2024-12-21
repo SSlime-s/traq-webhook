@@ -16,6 +16,8 @@ function calcHMACSHA1(message, secret) {
 /**
  * core.getBooleanInput を使うと、default 値の指定がうまくいかないため、getInput で取ってパースする
  *
+ * required 出ない場合のデフォルト値は `false`
+ *
  * @param {typeof core} core
  * @param {string} name
  * @param {core.InputOptions} options
@@ -23,7 +25,7 @@ function calcHMACSHA1(message, secret) {
  */
 function getBooleanLikeInput(core, name, options) {
 	const value = core.getInput(name, options);
-	return (value || "true").toUpperCase() === "TRUE";
+	return (value || "false").toUpperCase() === "TRUE";
 }
 
 async function main() {
