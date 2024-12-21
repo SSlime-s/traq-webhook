@@ -180,6 +180,8 @@ console.log(
 	stringifyVersion(newVersion),
 );
 
+await $`npm run fix`;
+
 await runBundle();
 
 await updatePackageJson(newVersion);
