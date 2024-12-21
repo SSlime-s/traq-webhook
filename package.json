@@ -1,6 +1,6 @@
 {
 	"name": "traq-webhook",
-	"version": "5.0.4",
+	"version": "5.0.5",
 	"description": "traQ に github actions +  webhook を用いて投稿するようのやつ",
 	"main": "index.js",
 	"scripts": {
