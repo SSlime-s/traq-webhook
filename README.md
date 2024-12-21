@@ -9,9 +9,18 @@ Webhook の Secret (Secure Webhookの場合必須)
 投稿先のチャンネル (入力しなければデフォルトのチャンネル)
 
 ### `message`
-投稿するメッセージ (入力しなければ自動生成されます)
+投稿するメッセージ (`auto-generate-message` が true の場合は無視されます)
+
+`auto-generate-message` が false もしくは未指定の場合は必須です
+
+### `auto-generate-message`
+true にすると自動生成されたメッセージを投稿します (`message` は無視されます)
+
+### `embed`
+true にすると埋め込みが有効になります
 
 ## 使用例
+### メッセージの自動生成を利用する場合
 ```
 on:
   issues:
@@ -33,8 +42,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: post to traQ
-      uses: SSlime-s/traq-webhook@v4.16
+      uses: SSlime-s/traq-webhook@v5
       with:
         webhook-id: ${{ secrets.WEBHOOK_ID }}
         webhook-secret: ${{ secrets.WEBHOOK_SECRET }}
+        auto-generate-message: true
+```
+
+### メッセージを指定する場合
+```
+on:
+  your-event
+
+jobs:
+  webhook:
+    runs-on: ubuntu-latest
+    steps:
+    - name: post to traQ
+      uses: SSlime-s/traq-webhook@v5
+      with:
+        webhook-id: ${{ secrets.WEBHOOK_ID }}
+        webhook-secret: ${{ secrets.WEBHOOK_SECRET }}
+        message: 'Hello, world!'
+        embed: true
 ```
