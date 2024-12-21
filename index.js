@@ -71,7 +71,7 @@ async function main() {
 }
 
 try {
-	await main();
+	void main();
 } catch (err) {
 	core.setFailed(err.message);
 }
