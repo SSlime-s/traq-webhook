@@ -1,31 +1,33 @@
 {
-  "name": "traq-webhook",
-  "version": "4.16",
-  "description": "traQ に github actions +  webhook を用いて投稿するようのやつ",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "ncc build index.js -o dist --source-map --license licenses.txt",
-    "deploy": "./bin/deploy.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SSlime-s/traq-webhook.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SSlime-s/traq-webhook/issues"
-  },
-  "homepage": "https://github.com/SSlime-s/traq-webhook#readme",
-  "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
-    "node-fetch": "^2.6.1",
-    "crypto": "^1.0.1"
-  },
-  "devDependencies": {
-    "@vercel/ncc": "^0.38.3"
-  }
+	"name": "traq-webhook",
+	"version": "4.16",
+	"description": "traQ に github actions +  webhook を用いて投稿するようのやつ",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"bundle": "ncc build index.js -o dist --source-map --license licenses.txt",
+		"deploy": "./bin/deploy.ts",
+		"fix": "biome check --write ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SSlime-s/traq-webhook.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/SSlime-s/traq-webhook/issues"
+	},
+	"homepage": "https://github.com/SSlime-s/traq-webhook#readme",
+	"dependencies": {
+		"@actions/core": "^1.11.1",
+		"@actions/github": "^6.0.0",
+		"crypto": "^1.0.1",
+		"node-fetch": "^2.6.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@vercel/ncc": "^0.38.3"
+	}
 }
