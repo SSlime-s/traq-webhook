@@ -1,5 +1,5 @@
-name: 'traq webhook'
-description: 'webhook for traq'
+name: "traq webhook"
+description: "webhook for traq"
 inputs:
   webhook-id:
     description: webhook id
@@ -7,15 +7,24 @@ inputs:
   webhook-secret:
     description: webhook secret
     required: false
-    default: '-1'
+    default: "-1"
   channel-id:
     description: send channel id
     required: false
-    default: '-1'
+    default: "-1"
   message:
     description: message content
     required: false
-    default: ''
+    default: ""
+  auto-generate-message:
+    description: auto generate message
+    required: false
+    default: false
+  embed:
+    description: embed content
+    required: false
+    default: false
+
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
