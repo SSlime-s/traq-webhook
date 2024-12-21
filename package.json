@@ -4,7 +4,6 @@
 	"description": "traQ に github actions +  webhook を用いて投稿するようのやつ",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"bundle": "ncc build index.js -o dist --source-map --license licenses.txt",
 		"deploy": "./bin/deploy.ts",
 		"fix": "biome check --write ."
