@@ -26,7 +26,7 @@ function getBooleanLikeInput(core, name, options) {
 	return (value || "true").toUpperCase() === "TRUE";
 }
 
-function main() {
+async function main() {
 	const id = core.getInput("webhook-id");
 	const secret = core.getInput("webhook-secret", { required: false });
 	const channelId = core.getInput("channel-id", { required: false });
@@ -48,27 +48,30 @@ function main() {
 		? makeMessage(core, context)
 		: messageInput;
 
-	if (typeof message === "string") {
-		const webhookUrl = `https://q.trap.jp/api/v3/webhooks/${id}`;
-		const url = isEmbed ? `${webhookUrl}?embed=1` : webhookUrl;
-
-		const headers = { "Content-Type": "text/plain" };
-		if (secret !== "-1") {
-			headers["X-TRAQ-Signature"] = calcHMACSHA1(message, secret);
-		}
-		if (channelId !== "-1") {
-			headers["X-TRAQ-Channel-Id"] = channelId;
-		}
-		fetch(url, {
-			method: "POST",
-			body: message,
-			headers,
-		});
+	if (typeof message !== "string") {
+		core.setFailed("there is no message to send");
+		return;
 	}
+
+	const webhookUrl = `https://q.trap.jp/api/v3/webhooks/${id}`;
+	const url = isEmbed ? `${webhookUrl}?embed=1` : webhookUrl;
+
+	const headers = { "Content-Type": "text/plain" };
+	if (secret !== "-1") {
+		headers["X-TRAQ-Signature"] = calcHMACSHA1(message, secret);
+	}
+	if (channelId !== "-1") {
+		headers["X-TRAQ-Channel-Id"] = channelId;
+	}
+	await fetch(url, {
+		method: "POST",
+		body: message,
+		headers,
+	});
 }
 
 try {
-	main();
+	await main();
 } catch (err) {
 	core.setFailed(err.message);
 }
